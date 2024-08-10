@@ -248,6 +248,13 @@ func (h *Handler) ResetPassword(ctx *gin.Context) {
 		return
 	}
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.NewPassword), bcrypt.DefaultCost)
+	if err != nil {
+		handleResponse(ctx, h.log, "Error with hashing password", http.StatusInternalServerError, err.Error())
+		return
+	}
+	request.NewPassword = string(hashedPassword)
+
 	err = h.storage.Auth().ResetPassword(ctx, request.NewPassword, email)
 	if err != nil {
 		handleResponse(ctx, h.log, "error while saving new password in service layer", http.StatusInternalServerError, err.Error())

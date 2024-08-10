@@ -36,15 +36,13 @@ func (a *authRepo) Register(ctx context.Context, request *models.RequestRegister
 		username,
 		email,
 		password_hash,
-		full_name,
-		native_language,
+		role,
 		created_at
 	) values ($1, $2, $3, $4, $5, $6) returning 
 		id,
 		username,
 		email,
-		full_name,
-		native_language,
+		role,
 		created_at::text
 	`
 
@@ -52,15 +50,13 @@ func (a *authRepo) Register(ctx context.Context, request *models.RequestRegister
 		request.Username,
 		request.Email,
 		request.Password,
-		request.FullName,
-		request.NativeLanguage,
+		"user",
 		timeNow).
 		Scan(
 			&user.Id,
 			&user.Username,
 			&user.Email,
-			&user.FullName,
-			&user.NativeLanguage,
+			&user.Role,
 			&user.CreatedAt,
 		); err != nil {
 		a.log.Error("error while creating user in storage layer", logger.Error(err))
@@ -84,8 +80,10 @@ func (a *authRepo) GetUserByUsername(ctx context.Context, username string) (*mod
 		username,
 		email,
 		password_hash,
-		full_name,
+		first_name,
+		last_name,
 		created_at::text
+		updated_at::text
 	from 
 		users 
 	where
@@ -97,8 +95,10 @@ func (a *authRepo) GetUserByUsername(ctx context.Context, username string) (*mod
 		&user.Username,
 		&user.Email,
 		&user.Password,
-		&user.FullName,
+		&user.FirstName,
+		&user.LastName,
 		&user.CreatedAt,
+		&user.UpdatedAt,
 	); err != nil {
 		a.log.Error("error while getting user id by username", logger.Error(err))
 		return nil, err

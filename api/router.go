@@ -13,13 +13,8 @@ import (
 
 // @title Auth Service
 // @version 1.0
-// @description This is the auth service of TravelTales app
+// @description This is the auth service of MoneyMate app
 
-// @contact.name Saidakbar
-// @contact.url http://www.support_me_with_smile
-// @contact.email "pardaboyevsaidakbar103@gmail.com"
-
-// @host localhost:9999
 // @BasePath /auth
 func NewRouter(log logger.ILogger, storage storage.IStorage) *gin.Engine {
 	r := gin.Default()

@@ -30,13 +30,16 @@ func (u *usersRepo) GetUserProfile(ctx context.Context, request *pb.PrimaryKey) 
 		err   error
 	)
 
-	query = `select
+	query = `
+	select
 		id,
 		username,
 		email,
-		full_name,
-		native_language,
-		created_at::text
+		first_name,
+		last_name,
+		role,
+		created_at::text,
+		updated_at::text
 	from
 		users
 	where
@@ -49,9 +52,11 @@ func (u *usersRepo) GetUserProfile(ctx context.Context, request *pb.PrimaryKey) 
 			&user.Id,
 			&user.Username,
 			&user.Email,
-			&user.FullName,
-			&user.NativeLanguage,
+			&user.FirstName,
+			&user.LastName,
+			&user.Role,
 			&user.CreatedAt,
+			&user.UpdatedAt,
 		); err != nil {
 		u.log.Error("error while getting user info in storage layer", logger.Error(err))
 		return nil, err
@@ -77,22 +82,27 @@ func (u *usersRepo) UpdateUserProfile(ctx context.Context, request *pb.UpdateUse
 		id,
 		username,
 		email,
-		full_name,
-		native_language,
+		first_name,
+		last_name,
+		role,
+		created_at::text,
 		updated_at::text
 	`
 
 	if err = u.db.QueryRow(ctx, query,
-		request.GetFullName(),
-		request.GetNativeLanguage(),
-		request.GetId()).
-		Scan(
+		request.GetUsername(),
+		request.GetEmail(),
+		request.GetFirstName(),
+		request.GetLastName(),
+		).Scan(
 			&user.Id,
 			&user.Username,
 			&user.Email,
-			&user.FullName,
-			&user.NativeLanguage,
-			&updatedAt,
+			&user.FirstName,
+			&user.LastName,
+			&user.Role,
+			&user.CreatedAt,
+			&user.UpdatedAt,
 		); err != nil {
 		u.log.Error("error while updating user info in storage layer", logger.Error(err))
 		return nil, err

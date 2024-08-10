@@ -5,20 +5,17 @@ import (
 )
 
 type RequestRegister struct {
-	Username       string `json:"username"`
-	Email          string `json:"email"`
-	Password       string `json:"password"`
-	FullName       string `json:"full_name"`
-	NativeLanguage string `json:"native_language"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type ResponseRegister struct {
-	Id             string `json:"id"`
-	Username       string `json:"username"`
-	Email          string `json:"email"`
-	FullName       string `json:"full_name"`
-	NativeLanguage string `json:"native_language"`
-	CreatedAt      string `json:"created_at"`
+	Id        string `json:"id"`
+	Username  string `json:"username"`
+	Email     string `json:"email"`
+	Role      string `json:"role"`
+	CreatedAt string `json:"created_at"`
 }
 
 type Response struct {
@@ -53,8 +50,11 @@ type UserForLogin struct {
 	Username  string `json:"username"`
 	Email     string `json:"email"`
 	Password  string `json:"password"`
-	FullName  string `json:"full_name"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Role      string `json:"role"`
 	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
 }
 
 type StoreRefreshToken struct {
