@@ -76,9 +76,11 @@ func (u *usersRepo) UpdateUserProfile(ctx context.Context, request *pb.UpdateUse
 
 	query = `
 	update users set
-		full_name = $1,
-		native_language $2,
-	where id = $3 returning
+		username   = $1,
+		email      = $2,
+		first_name = $3,
+		last_name  = $4,
+	where id = $4 returning
 		id,
 		username,
 		email,
@@ -94,6 +96,7 @@ func (u *usersRepo) UpdateUserProfile(ctx context.Context, request *pb.UpdateUse
 		request.GetEmail(),
 		request.GetFirstName(),
 		request.GetLastName(),
+		request.GetId(),
 		).Scan(
 			&user.Id,
 			&user.Username,

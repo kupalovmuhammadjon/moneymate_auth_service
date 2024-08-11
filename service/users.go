@@ -11,9 +11,10 @@ import (
 type userService struct {
 	storage storage.IStorage
 	log     logger.ILogger
+	pb.UnimplementedUsersServiceServer
 }
 
-func NewUsersService(storage storage.IStorage, log logger.ILogger) *userService {
+func NewUsersService(storage storage.IStorage, log logger.ILogger) pb.UsersServiceServer {
 	return &userService{
 		storage: storage,
 		log:     log,
