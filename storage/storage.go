@@ -56,7 +56,7 @@ func New(ctx context.Context, cfg *configs.Config, log *logger.ILogger) (IStorag
 		return nil, err
 	}
 
-	redisClient, err := rds.NewRedisClient()
+	redisClient, err := rds.NewRedisClient(cfg)
 	if err != nil {
 		return nil, err
 	}

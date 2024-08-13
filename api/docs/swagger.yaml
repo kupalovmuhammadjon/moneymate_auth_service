@@ -21,10 +21,6 @@ definitions:
     properties:
       email:
         type: string
-      full_name:
-        type: string
-      native_language:
-        type: string
       password:
         type: string
       username:
@@ -45,13 +41,9 @@ definitions:
       statusCode:
         type: integer
     type: object
-host: localhost:9999
 info:
-  contact:
-    email: '"pardaboyevsaidakbar103@gmail.com"'
-    name: Saidakbar
-    url: http://www.support_me_with_smile
-  description: This is the auth service of TravelTales app
+  contact: {}
+  description: This is the auth service of MoneyMate app
   title: Auth Service
   version: "1.0"
 paths:

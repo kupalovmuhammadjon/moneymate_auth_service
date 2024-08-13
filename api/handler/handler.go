@@ -24,19 +24,22 @@ func handleResponse(ctx *gin.Context, log logger.ILogger, msg string, statusCode
 
 	resp := models.Response{}
 
-	switch code := statusCode; {
-	case code == 200:
+	switch {
+	case statusCode >= 200 && statusCode < 300:
 		resp.Description = "OK"
-		log.Info("~~~> OK", logger.String("msg", msg), logger.Any("status", statusCode))
-	case code == 401:
-		resp.Description = "Unauthorized"
-		log.Info("???? Unauthorized", logger.String("msg", msg), logger.Any("status", statusCode))
-	case code == 500:
+		log.Info("Response OK", logger.String("msg", msg), logger.Int("status", statusCode))
+	case statusCode == 400:
 		resp.Description = "Bad Request"
-		log.Info("!!!! BAD REQUEST", logger.String("msg", msg), logger.Any("status", statusCode), logger.Any("Error", data))
-	default:
+		log.Warn("Bad Request", logger.String("msg", msg), logger.Int("status", statusCode), logger.Any("error", data))
+	case statusCode == 401:
+		resp.Description = "Unauthorized"
+		log.Warn("Unauthorized", logger.String("msg", msg), logger.Int("status", statusCode))
+	case statusCode >= 500:
 		resp.Description = "Internal Server Error"
-		log.Info("!!!! INTERNAL SERVER ERROR", logger.String("msg", msg), logger.Any("status", statusCode), logger.Any("Error", data))
+		log.Error("Internal Server Error", logger.String("msg", msg), logger.Int("status", statusCode), logger.Any("error", data))
+	default:
+		resp.Description = "Unknown Error"
+		log.Error("Unknown Error", logger.String("msg", msg), logger.Int("status", statusCode), logger.Any("error", data))
 	}
 
 	resp.StatusCode = statusCode

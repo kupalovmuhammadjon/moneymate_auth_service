@@ -9,11 +9,7 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {
-            "name": "Saidakbar",
-            "url": "http://www.support_me_with_smile",
-            "email": "\"pardaboyevsaidakbar103@gmail.com\""
-        },
+        "contact": {},
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -309,12 +305,6 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
-                "full_name": {
-                    "type": "string"
-                },
-                "native_language": {
-                    "type": "string"
-                },
                 "password": {
                     "type": "string"
                 },
@@ -352,11 +342,11 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:9999",
+	Host:             "",
 	BasePath:         "/auth",
 	Schemes:          []string{},
 	Title:            "Auth Service",
-	Description:      "This is the auth service of TravelTales app",
+	Description:      "This is the auth service of MoneyMate app",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

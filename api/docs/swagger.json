@@ -1,16 +1,11 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is the auth service of TravelTales app",
+        "description": "This is the auth service of MoneyMate app",
         "title": "Auth Service",
-        "contact": {
-            "name": "Saidakbar",
-            "url": "http://www.support_me_with_smile",
-            "email": "\"pardaboyevsaidakbar103@gmail.com\""
-        },
+        "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:9999",
     "basePath": "/auth",
     "paths": {
         "/forgot-password": {
@@ -301,12 +296,6 @@
             "type": "object",
             "properties": {
                 "email": {
-                    "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
-                },
-                "native_language": {
                     "type": "string"
                 },
                 "password": {

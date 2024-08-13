@@ -9,6 +9,7 @@ import (
 )
 
 func ConnectDB(ctx context.Context, cfg configs.Config) (*pgxpool.Pool, error) {
+	
 	url := fmt.Sprintf(
 		`postgres://%s:%s@%s:%s/%s?sslmode=disable`,
 		cfg.PostgresUser,

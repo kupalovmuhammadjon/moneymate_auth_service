@@ -25,9 +25,12 @@ func NewUsersRepo(db *pgxpool.Pool, log logger.ILogger) *usersRepo {
 func (u *usersRepo) GetUserProfile(ctx context.Context, request *pb.PrimaryKey) (*pb.User, error) {
 
 	var (
-		user  = pb.User{}
-		query string
-		err   error
+		user      = pb.User{}
+		query     string
+		err       error
+		firstName sql.NullString
+		lastName  sql.NullString
+		updatedAt sql.NullString
 	)
 
 	query = `
@@ -40,27 +43,28 @@ func (u *usersRepo) GetUserProfile(ctx context.Context, request *pb.PrimaryKey) 
 		role,
 		created_at::text,
 		updated_at::text
-	from
-		users
+	from 
+		users 
 	where
 		id = $1
 	`
 
-	if err = u.db.QueryRow(ctx, query,
-		request.GetId()).
-		Scan(
-			&user.Id,
-			&user.Username,
-			&user.Email,
-			&user.FirstName,
-			&user.LastName,
-			&user.Role,
-			&user.CreatedAt,
-			&user.UpdatedAt,
-		); err != nil {
-		u.log.Error("error while getting user info in storage layer", logger.Error(err))
+	if err = u.db.QueryRow(ctx, query, request.Id).Scan(
+		&user.Id,
+		&user.Username,
+		&user.Email,
+		&firstName,
+		&lastName,
+		&user.Role,
+		&user.CreatedAt,
+		&updatedAt,
+	); err != nil {
+		u.log.Error("error while getting user id by username", logger.Error(err))
 		return nil, err
 	}
+	user.FirstName = firstName.String
+	user.LastName = lastName.String
+	user.UpdatedAt = updatedAt.String
 
 	return &user, nil
 }
@@ -79,8 +83,9 @@ func (u *usersRepo) UpdateUserProfile(ctx context.Context, request *pb.UpdateUse
 		username   = $1,
 		email      = $2,
 		first_name = $3,
-		last_name  = $4,
-	where id = $4 returning
+		last_name  = $4
+	where id = $5 
+	returning
 		id,
 		username,
 		email,
@@ -97,16 +102,16 @@ func (u *usersRepo) UpdateUserProfile(ctx context.Context, request *pb.UpdateUse
 		request.GetFirstName(),
 		request.GetLastName(),
 		request.GetId(),
-		).Scan(
-			&user.Id,
-			&user.Username,
-			&user.Email,
-			&user.FirstName,
-			&user.LastName,
-			&user.Role,
-			&user.CreatedAt,
-			&user.UpdatedAt,
-		); err != nil {
+	).Scan(
+		&user.Id,
+		&user.Username,
+		&user.Email,
+		&user.FirstName,
+		&user.LastName,
+		&user.Role,
+		&user.CreatedAt,
+		&updatedAt,
+	); err != nil {
 		u.log.Error("error while updating user info in storage layer", logger.Error(err))
 		return nil, err
 	}

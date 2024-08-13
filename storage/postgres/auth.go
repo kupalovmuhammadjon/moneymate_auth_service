@@ -38,7 +38,7 @@ func (a *authRepo) Register(ctx context.Context, request *models.RequestRegister
 		password_hash,
 		role,
 		created_at
-	) values ($1, $2, $3, $4, $5, $6) returning 
+	) values ($1, $2, $3, $4, $5) returning 
 		id,
 		username,
 		email,
@@ -69,9 +69,12 @@ func (a *authRepo) Register(ctx context.Context, request *models.RequestRegister
 func (a *authRepo) GetUserByUsername(ctx context.Context, username string) (*models.UserForLogin, error) {
 
 	var (
-		user  = models.UserForLogin{}
-		query string
-		err   error
+		user      = models.UserForLogin{}
+		query     string
+		err       error
+		firstName sql.NullString
+		lastName  sql.NullString
+		updatedAt sql.NullString
 	)
 
 	query = `
@@ -82,7 +85,8 @@ func (a *authRepo) GetUserByUsername(ctx context.Context, username string) (*mod
 		password_hash,
 		first_name,
 		last_name,
-		created_at::text
+		role,
+		created_at::text,
 		updated_at::text
 	from 
 		users 
@@ -95,14 +99,19 @@ func (a *authRepo) GetUserByUsername(ctx context.Context, username string) (*mod
 		&user.Username,
 		&user.Email,
 		&user.Password,
-		&user.FirstName,
-		&user.LastName,
+		&firstName,
+		&lastName,
+		&user.Role,
 		&user.CreatedAt,
-		&user.UpdatedAt,
+		&updatedAt,
 	); err != nil {
 		a.log.Error("error while getting user id by username", logger.Error(err))
 		return nil, err
 	}
+	user.FirstName = firstName.String
+	user.LastName = lastName.String
+	user.UpdatedAt = updatedAt.String
+
 	return &user, nil
 }
 

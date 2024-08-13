@@ -26,12 +26,6 @@ type Config struct {
 	PostgresName     string
 	PostgresPassword string
 
-	MongoDBHost     string
-	MongoDBPort     string
-	MongoDBUser     string
-	MongoDBName     string
-	MongoDBPassword string
-
 	RedisHost     string
 	RedisDBNumber int
 	RedisPort     string
@@ -67,14 +61,8 @@ func Load() *Config {
 	config.PostgresHost = cast.ToString(coalesce("POSTGRES_HOST", "localhost"))
 	config.PostgresPort = cast.ToString(coalesce("POSTGRES_PORT", "5432"))
 	config.PostgresUser = cast.ToString(coalesce("POSTGRES_USER", "postgres"))
-	config.PostgresName = cast.ToString(coalesce("POSTGRES_NAME", "language_leap_auth_service"))
+	config.PostgresName = cast.ToString(coalesce("POSTGRES_DBNAME", "language_leap_auth_service"))
 	config.PostgresPassword = cast.ToString(coalesce("POSTGRES_PASSWORD", "root"))
-
-	config.MongoDBHost = cast.ToString(coalesce("MONGODB_HOST", "localhost"))
-	config.MongoDBPort = cast.ToString(coalesce("MONGODB_PORT", "5432"))
-	config.MongoDBUser = cast.ToString(coalesce("MONGODB_USER", "mongo"))
-	config.MongoDBName = cast.ToString(coalesce("MONGODB_NAME", "market_product_service"))
-	config.MongoDBPassword = cast.ToString(coalesce("MONGODB_PASSWORD", ""))
 
 	config.RedisHost = cast.ToString(coalesce("REDIS_HOST", "localhost"))
 	config.RedisDBNumber = cast.ToInt(coalesce("REDIS_DBNUMBER", 0))

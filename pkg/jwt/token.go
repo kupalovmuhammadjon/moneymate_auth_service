@@ -20,6 +20,7 @@ func GenarateJWTToken(user *models.UserForLogin) (*models.ResponseRefreshToken, 
 	claimsAccess["email"] = user.Email
 	claimsAccess["first_name"] = user.FirstName
 	claimsAccess["last_name"] = user.LastName
+	claimsAccess["role"] = user.Role
 	claimsAccess["iat"] = time.Now().Unix()
 	claimsAccess["exp"] = time.Now().Add(time.Hour).Unix()
 
@@ -34,6 +35,7 @@ func GenarateJWTToken(user *models.UserForLogin) (*models.ResponseRefreshToken, 
 	claimsRefresh["email"] = user.Email
 	claimsAccess["first_name"] = user.FirstName
 	claimsAccess["last_name"] = user.LastName
+	claimsAccess["role"] = user.Role
 	claimsRefresh["iat"] = time.Now().Unix()
 	claimsRefresh["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
