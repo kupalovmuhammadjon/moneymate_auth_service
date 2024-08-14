@@ -27,7 +27,7 @@ services:
       - auth_service
     volumes:
       - ./migrations:/migrations
-    command: ["-path", "/migrations", "-database", "postgres://postgres:root@postgres:5432/moneymate_auth_service?sslmode=disable", "up"]
+    command: ["-path", "/migrations", "-database", "postgres://postgres:root@postgres-db:5432/moneymate_auth_service?sslmode=disable", "up"]
     depends_on:
       - postgres-db
 
@@ -60,7 +60,7 @@ services:
 
 networks:
   auth_service:
-    driver: bridge
+    external: true
 
 volumes:
   postgres-data:
